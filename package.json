@@ -1,0 +1,19 @@
+{
+  "name": "database_ddl",
+  "version": "1.0.0",
+  "description": "テーブル作成時のDDLを登録する",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/teamkouryuu/database_ddl.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/teamkouryuu/database_ddl/issues"
+  },
+  "homepage": "https://github.com/teamkouryuu/database_ddl#readme"
+}
