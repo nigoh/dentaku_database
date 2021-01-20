@@ -61,7 +61,7 @@ PName=Table‗B
 LName=履歴用
 Comment=履歴用テーブル
 TableOption=
-Page=Main
+Page=MAIN
 Left=800
 Top=350
 Field="ID","ID","integer","NOT NULL",,"","",$FFFFFFFF,""
@@ -70,7 +70,7 @@ EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
 ModifiedDateTime=20210115225249
-Position="Main",800,350
+Position="MAIN",800,350
 ZOrder=2
 
 [Relation]
@@ -94,3 +94,23 @@ Bar3=185
 TermPos1=R
 TermPos2=R
 ZOrder=3
+
+[Entity]
+PName=Cal_TABLE
+LName=Cal_TABLE
+Comment=
+TableOption=
+Page=Main
+Left=1150
+Top=300
+Field="id","id","char","NOT NULL",0,"","",$FFFFFFFF,""
+Field="lefr","left","integer",,,"","",$FFFFFFFF,""
+Field="right","right","integer",,,"","",$FFFFFFFF,""
+Field="caltype","caltype","char",,,"","",$FFFFFFFF,""
+Field="result","result","integer",,,"","",$FFFFFFFF,""
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+ModifiedDateTime=20210121012634
+Position="Main",1150,300
+ZOrder=4
