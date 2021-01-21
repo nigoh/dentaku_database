@@ -1,5 +1,5 @@
 -- Project Name : 四則演算
--- Date/Time    : 2021/01/21 20:44:25
+-- Date/Time    : 2021/01/21 21:06:33
 -- Author       : souta
 -- RDBMS Type   : PostgreSQL
 -- Application  : A5:SQL Mk-2
@@ -13,7 +13,7 @@
 -- Cal_TABLE
 --* RestoreFromTempTable
 create table Cal_TABLE (
-  id char not null
+  id integer not null
   , formura text
   , constraint Cal_TABLE_PKC primary key (id)
 ) ;
