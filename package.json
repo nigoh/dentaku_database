@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/teamkouryuu/database_ddl/issues"
   },
-  "homepage": "https://github.com/teamkouryuu/database_ddl#readme"
+  "homepage": "https://github.com/teamkouryuu/database_ddl#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "sqlite3": "^5.0.1"
+  }
 }
