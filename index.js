@@ -11,12 +11,6 @@ db.serialize(function() {
   db.run("CREATE TABLE Cal_TABLE ( formula text )");
 });
 
-
-//app.get('/', (req, res) => {
-//  let num  = 1 + 2;
-//  res.send('result:' + num);
-//});
-
 app.get('/dentaku', (req, res) => {
   let str = "";
   // テーブルのレコードを取得する
@@ -75,7 +69,7 @@ app.get('/dentaku/:val1', (req, res) => {
   }
 
   //計算式と計算結果をnumに入れたい
-  num = array_str.join("") + result;
+  let num = array_str.join("") + result;
   // テーブルにインサートする
   db.serialize(function() {
     var stmt = db.prepare("INSERT INTO Cal_TABLE VALUES ( ? )");
@@ -87,21 +81,6 @@ app.get('/dentaku/:val1', (req, res) => {
  // db.close();
   res.send('result:' + num);
 });
-
-app.get('/dentaku/:val1/:val2', (req, res) => {
-  let num  = Number( req.params.val1 ) + Number( req.params.val2 );
-  // テーブルにインサートする
-  db.serialize(function() {
-    var stmt = db.prepare("INSERT INTO Cal_TABLE VALUES ( ? )");
-    console.log(num);
-    stmt.run(num);
-    stmt.finalize();
-    console.log('finalize');
-  });
- // db.close();
-  res.send('result:' + num);
-});
-
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
