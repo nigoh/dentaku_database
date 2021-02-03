@@ -25,3 +25,16 @@
 
 ## TypeScript
 http://www.tohoho-web.com/ex/typescript.html
+
+
+## index.jsの動かし方
+1. detabase_dllまでディレクトリを移動する
+2. ターミナルに[node index.js]を入力
+
+## 計算方法
+1. ターミナルでindex.jsを動かす
+2. localhostをブラウザで開く
+3. URLに計算式を入力
+  - 例
+   - localhost:8000/dentaku/1,+,2,=
+   - 四則演算の記号：+,-,*,÷

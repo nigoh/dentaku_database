@@ -34,8 +34,6 @@ app.get('/dentaku', (req, res) => {
   res.send('result:' + str);
 });
 
-
-// =を押したときに動かしたい
 app.get('/dentaku/:val1', (req, res) => {
  // let num  = Number( req.params.val1 ) + Number( req.params.val2 );
   // 文字列を数字と演算子と数字に分解したい
@@ -48,42 +46,36 @@ app.get('/dentaku/:val1', (req, res) => {
   {
     if(array_str[i] == "+")
     {
-      console.log("+");
       ++i;
       result += Number(array_str[i]) ;
     }
     else if(array_str[i] == "-")
     {
-      console.log("-");
       ++i;
       result -= Number(array_str[i]) ;
     }
     else if(array_str[i] == "*")
     {
-      console.log("*");
       ++i;
       result *= Number(array_str[i]) ;
     }
-    else if(array_str[i] == "/")
+    else if(array_str[i] == "÷")
     {
-      console.log("÷");
       ++i;
       result /= Number(array_str[i]) ;
     }
     else if(array_str[i] == "=")
     {
-      console.log("=");
       break;
     }
     else
     {
-      console.log(array_str[i] );
       result = Number(array_str[i]) ;
     }
   }
 
   //計算式と計算結果をnumに入れたい
-  num = array_str.join("") + "=" + result;
+  num = array_str.join("") + result;
   // テーブルにインサートする
   db.serialize(function() {
     var stmt = db.prepare("INSERT INTO Cal_TABLE VALUES ( ? )");
