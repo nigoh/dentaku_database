@@ -8,45 +8,66 @@ var db = new sqlite3.Database(':memory:');
 // テーブルを作成する
 db.serialize(function() {
   console.log("create table");
-  db.run("CREATE TABLE lorem ( index2 integer )");
+  db.run("CREATE TABLE Cal_TABLE ( formula text )");
 });
 
 
-app.get('/', (req, res) => {
-  let num  = 1 + 2;
-  res.send('result:' + num);
-});
+//app.get('/', (req, res) => {
+//  let num  = 1 + 2;
+//  res.send('result:' + num);
+//});
 
-app.get('/nandemo', (req, res) => {
+app.get('/dentaku', (req, res) => {
   let str = "";
   // テーブルのレコードを取得する
   db.serialize(function() {
-    db.each("SELECT rowid AS id, index2 FROM lorem", function( err, row ) {
+    db.each("SELECT rowid AS id, formula FROM Cal_TABLE", function( err, row ) {
       // 取得したデータ1レコードずつ処理をする
-        console.log( row.id + ": " + row.index2 );
-        str += row.index2;
+        console.log( row.id + ": " + row.formula );
+        str += row.formula;
         str += "\n";
         console.log( str );
     });
   });
   //let num  = 1 + 2;
   // TODO: 文字列が表示されない。
-  res.send('nandemo:' + str);
+  res.send('result:' + str);
 });
 
+// +-*/を押されたときに直前まで入力していた数字を保持？
+// 
 
-app.get('/nandemo/:val1/:val2', (req, res) => {
-  let num  = Number( req.params.val1 ) + Number( req.params.val2 );
+app.get('/dentaku/:val1', (req, res) => {
+ // let num  = Number( req.params.val1 ) + Number( req.params.val2 );
+  // 文字列を数字と演算子と数字に分解したい
+  str = req.params.val1
+  str.split("_");
+  console.log( str );
+  num = str;
   // テーブルにインサートする
   db.serialize(function() {
-    var stmt = db.prepare("INSERT INTO lorem VALUES ( ? )");
+    var stmt = db.prepare("INSERT INTO Cal_TABLE VALUES ( ? )");
     console.log(num);
     stmt.run(num);
     stmt.finalize();
     console.log('finalize');
   });
  // db.close();
-  res.send('nandemo:' + num);
+  res.send('result:' + num);
+});
+
+app.get('/dentaku/:val1/:val2', (req, res) => {
+  let num  = Number( req.params.val1 ) + Number( req.params.val2 );
+  // テーブルにインサートする
+  db.serialize(function() {
+    var stmt = db.prepare("INSERT INTO Cal_TABLE VALUES ( ? )");
+    console.log(num);
+    stmt.run(num);
+    stmt.finalize();
+    console.log('finalize');
+  });
+ // db.close();
+  res.send('result:' + num);
 });
 
 
