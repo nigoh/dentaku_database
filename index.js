@@ -43,10 +43,39 @@ app.get('/dentaku/:val1', (req, res) => {
   var array_str = str.split(",");
   console.log( array_str );
   // 分解した文字で計算したい
-  for( )
+  var result = 0;
+  for( let i = 0; i < array_str.length ; ++i )
+  {
+    if(array_str[i] == "+")
+    {
+      console.log("+");
+    }
+    else if(array_str[i] == "-")
+    {
+      console.log("-");
+    }
+    else if(array_str[i] == "*")
+    {
+      console.log("*");
+    }
+    else if(array_str[i] == "/")
+    {
+      console.log("÷");
+    }
+    else if(array_str[i] == "=")
+    {
+      console.log("=");
+    }
+    else
+    {
+      result = Number(array_str[i]) ;
+      console.log(array_str[i] );
+    }
+
+  }
 
   //計算式と計算結果をnumに入れたい
-  //num = str.join() + "=" + log;
+  num = array_str.join("") + "=" + result;
   // テーブルにインサートする
   db.serialize(function() {
     var stmt = db.prepare("INSERT INTO Cal_TABLE VALUES ( ? )");
