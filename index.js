@@ -34,16 +34,19 @@ app.get('/dentaku', (req, res) => {
   res.send('result:' + str);
 });
 
-// +-*/を押されたときに直前まで入力していた数字を保持？
-// 
 
+// =を押したときに動かしたい
 app.get('/dentaku/:val1', (req, res) => {
  // let num  = Number( req.params.val1 ) + Number( req.params.val2 );
   // 文字列を数字と演算子と数字に分解したい
   str = req.params.val1
-  str.split("_");
-  console.log( str );
-  num = str;
+  var array_str = str.split(",");
+  console.log( array_str );
+  // 分解した文字で計算したい
+  for( )
+
+  //計算式と計算結果をnumに入れたい
+  //num = str.join() + "=" + log;
   // テーブルにインサートする
   db.serialize(function() {
     var stmt = db.prepare("INSERT INTO Cal_TABLE VALUES ( ? )");
