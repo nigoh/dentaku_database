@@ -49,29 +49,37 @@ app.get('/dentaku/:val1', (req, res) => {
     if(array_str[i] == "+")
     {
       console.log("+");
+      ++i;
+      result += Number(array_str[i]) ;
     }
     else if(array_str[i] == "-")
     {
       console.log("-");
+      ++i;
+      result -= Number(array_str[i]) ;
     }
     else if(array_str[i] == "*")
     {
       console.log("*");
+      ++i;
+      result *= Number(array_str[i]) ;
     }
     else if(array_str[i] == "/")
     {
       console.log("÷");
+      ++i;
+      result /= Number(array_str[i]) ;
     }
     else if(array_str[i] == "=")
     {
       console.log("=");
+      break;
     }
     else
     {
-      result = Number(array_str[i]) ;
       console.log(array_str[i] );
+      result = Number(array_str[i]) ;
     }
-
   }
 
   //計算式と計算結果をnumに入れたい
