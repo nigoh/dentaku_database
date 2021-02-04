@@ -26,15 +26,15 @@ app.get('/dentaku', (req, res) => {
   //let num  = 1 + 2;
   // TODO: 文字列が表示されない。
   res.send('result:' + str);
-});
+ });
 
+// 計算
 app.get('/dentaku/:val1', (req, res) => {
- // let num  = Number( req.params.val1 ) + Number( req.params.val2 );
-  // 文字列を数字と演算子と数字に分解したい
+  // 文字列を数字と演算子と数字に分解
   str = req.params.val1
   var array_str = str.split(",");
   console.log( array_str );
-  // 分解した文字で計算したい
+  // 分解した文字で計算
   var result = 0;
   for( let i = 0; i < array_str.length ; ++i )
   {
@@ -67,8 +67,7 @@ app.get('/dentaku/:val1', (req, res) => {
       result = Number(array_str[i]) ;
     }
   }
-
-  //計算式と計算結果をnumに入れたい
+  //計算式と計算結果をnumに入れる
   let num = array_str.join("") + result;
   // テーブルにインサートする
   db.serialize(function() {
