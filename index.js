@@ -12,19 +12,31 @@ db.serialize(function() {
 });
 
 app.get('/dentaku', (req, res) => {
+//  let str = "";
+//  // テーブルのレコードを取得する
+//  db.serialize(function() {
+//    db.each("SELECT rowid AS id, formula FROM Cal_TABLE", function( err, row ) {
+//      // 取得したデータ1レコードずつ処理をする
+//        console.log( row.id + ": " + row.formula );
+//        str += row.formula;
+//        str += "\n";
+//        console.log( str );
+//    });
+//  });
+//  res.send('result:' + str);
+  
   let str = "";
-  // テーブルのレコードを取得する
-  db.serialize(function() {
-    db.each("SELECT rowid AS id, formula FROM Cal_TABLE", function( err, row ) {
-      // 取得したデータ1レコードずつ処理をする
-        console.log( row.id + ": " + row.formula );
-        str += row.formula;
-        str += "\n";
-        console.log( str );
-    });
+  new Promise(function(resolve, reject) {
+    db.serialize(function() {
+      db.each("SELECT rowid AS id, formula FROM Cal_TABLE", function( err, row ) {
+        // 取得したデータ1レコードずつ処理をする
+          console.log( row.id + ": " + row.formula );
+          str += row.formula;
+          str += "\n";
+          console.log( str );
+      });
+    })
   });
-  //let num  = 1 + 2;
-  // TODO: 文字列が表示されない。
   res.send('result:' + str);
  });
 
@@ -77,8 +89,8 @@ app.get('/dentaku/:val1', (req, res) => {
     stmt.finalize();
     console.log('finalize');
   });
- // db.close();
-  res.send('result:' + num);
+ // 返すのは計算結果のみ
+  res.send( String(result) );
 });
 
 app.listen(port, () => {
