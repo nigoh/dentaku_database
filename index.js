@@ -24,20 +24,25 @@ app.get('/dentaku', (req, res) => {
 //    });
 //  });
 //  res.send('result:' + str);
-  
-  let str = "";
-  new Promise(function(resolve, reject) {
-    db.serialize(function() {
-      db.each("SELECT rowid AS id, formula FROM Cal_TABLE", function( err, row ) {
-        // 取得したデータ1レコードずつ処理をする
-          console.log( row.id + ": " + row.formula );
-          str += row.formula;
-          str += "\n";
-          console.log( str );
-      });
+  let str = ""
+  let pormise1 = new Promise( function( resolve, reject ){
+    db.serialize( Promise2.then( resolve ),res => {
+      res.send( resolve );
     })
   });
-  res.send('result:' + str);
+
+  let Promise2 = new Promise(function(){
+    db.each("SELECT rowid AS id, formula FROM Cal_TABLE", function( err, row ) {
+      // 取得したデータ1レコードずつ処理をする
+      console.log( row.id + ": " + row.formula );
+      str += row.formula;
+      str += "\n";
+      console.log( str );
+    })
+ })
+ 
+ pormise1.then((resolve)=> {
+   res.send(resolve);
  });
 
 // 計算
