@@ -26,7 +26,7 @@ app.get('/dentaku', (req, res) => {
 //  res.send('result:' + str);
   let str = ""
   let pormise1 = new Promise( function( resolve, reject ){
-    db.serialize( Promise2.then( resolve ),res => {
+    db.serialize( Promise2.then( resolve ), reject => {
       res.send( resolve );
     })
   });
@@ -39,11 +39,15 @@ app.get('/dentaku', (req, res) => {
       str += "\n";
       console.log( str );
     })
- })
+  });
  
- pormise1.then((resolve)=> {
-   res.send(resolve);
- });
+  pormise1.then(()=> {  
+    console.log( "resolve:"+resolve );
+    console.log( "str:"+str );
+    res.send(resolve);
+  });
+
+});
 
 // 計算
 app.get('/dentaku/:val1', (req, res) => {
