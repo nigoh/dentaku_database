@@ -11,6 +11,29 @@ db.serialize(function() {
   db.run("CREATE TABLE Cal_TABLE ( formula text )");
 });
 
+//非同期処理(仮)
+function promise1(){
+  return new Promise((resolve,reject)=>{
+    db.serialize( function(){
+      db.each("SELECT rowid AS id, formula FROM Cal_TABLE", function( err, row ) {
+        // 取得したデータ1レコードずつ処理をする
+        console.log( row.id + ": " + row.formula );
+        str += row.formula;
+        str += "\n";
+        console.log( str );
+      })
+      if ( true ) {
+        resolve(str);  //引数のresolveに’成功’を返す
+      } else {
+        reject(new Error('失敗'));    //引数のreject'失敗'を返す
+      }
+  
+    })
+  })
+};
+
+
+
 app.get('/dentaku', (req, res) => {
 //  let str = "";
 //  // テーブルのレコードを取得する
@@ -24,6 +47,7 @@ app.get('/dentaku', (req, res) => {
 //    });
 //  });
 //  res.send('result:' + str);
+/*
   let str = ""
   let pormise1 = new Promise( function( resolve, reject ){
     db.serialize( Promise2.then( resolve ), reject => {
@@ -40,11 +64,11 @@ app.get('/dentaku', (req, res) => {
       console.log( str );
     })
   });
- 
-  pormise1.then(()=> {  
-    console.log( "resolve:"+resolve );
-    console.log( "str:"+str );
-    res.send(resolve);
+ */
+
+  promise1.then(()=> {  
+    console.log( str );
+    res.send(str);
   });
 
 });
