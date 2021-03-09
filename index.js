@@ -11,76 +11,34 @@ db.serialize(function() {
   db.run("CREATE TABLE Cal_TABLE ( formula text )");
 });
 
-//非同期処理(仮)
+//非同期処理
 function promise1(){
-  return new Promise((resolve,reject)=>{
+  return new Promise((resolve,reject)=>{  
     //serialize内の処理は同期処理
-    db.serialize( );
-    db.each("SELECT rowid AS id, formula FROM Cal_TABLE", function( err, row ) {
-      if(err)
-      {
-        throw err;
-      }
-      // 取得したデータ1レコードずつ処理をする
-      console.log( row.id + ": " + row.formula );
-      str += row.formula;
-      str += "\n";
-      console.log( str );
-    })
-    if ( true ) {
-      resolve(str);  //引数のresolveに’成功’を返す
-    } else {
-      reject(new Error('失敗'));    //引数のreject'失敗'を返す
-    }
+    db.serialize(function() {
+      db.all("SELECT rowid AS id, formula FROM Cal_TABLE", function( err, rows ) {
+        if(err) {
+          reject(err); 
+        } else {
+          resolve(rows);  //引数のresolveに’成功’を返す
+        }
+      });
+    });
   })
 };
 
 app.get('/dentaku', (req, res) => {
-  let str = "";
-  promise1.then(()=>{         // TypeError: promise1.then is not a function
+  promise1().then(( str )=>{         // TypeError: promise1.then is not a function
     console.log( str );
-    res.send(str);
-  });
-
-  
-// let str = "";
-//  // テーブルのレコードを取得する
-//  db.serialize(function() {
-//    db.each("SELECT rowid AS id, formula FROM Cal_TABLE", function( err, row ) {
-//      // 取得したデータ1レコードずつ処理をする
-//        console.log( row.id + ": " + row.formula );
-//        str += row.formula;
-//        str += "\n";
-//        console.log( str );
-//    });
-//  });
-//  res.send('result:' + str);
-/*
-  let str = ""
-  let pormise1 = new Promise( function( resolve, reject ){
-    db.serialize( Promise2.then( resolve ), reject => {
-      res.send( resolve );
-    })
-  });
-
-  let Promise2 = new Promise(function(){
-    db.each("SELECT rowid AS id, formula FROM Cal_TABLE", function( err, row ) {
-      // 取得したデータ1レコードずつ処理をする
-      console.log( row.id + ": " + row.formula );
-      str += row.formula;
-      str += "\n";
-      console.log( str );
-    })
-  });
- */
+    res.send(String("<h1>" + str + "</h1>"));
+  });　
 });
 
 // 計算
 app.get('/dentaku/:val1', (req, res) => {
   // 文字列を数字と演算子と数字に分解
-  str = req.params.val1
+  const str = req.params.val1
   var array_str = str.split(",");
-  console.log( array_str );
   // 分解した文字で計算
   var result = 0;
   for( let i = 0; i < array_str.length ; ++i )
@@ -119,10 +77,8 @@ app.get('/dentaku/:val1', (req, res) => {
   // テーブルにインサートする
   db.serialize(function() {
     var stmt = db.prepare("INSERT INTO Cal_TABLE VALUES ( ? )");
-    console.log(num);
     stmt.run(num);
     stmt.finalize();
-    console.log('finalize');
   });
  // 返すのは計算結果のみ
   res.send( String(result) );
