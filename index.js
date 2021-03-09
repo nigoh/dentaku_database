@@ -14,28 +14,36 @@ db.serialize(function() {
 //非同期処理(仮)
 function promise1(){
   return new Promise((resolve,reject)=>{
-    db.serialize( function(){
-      db.each("SELECT rowid AS id, formula FROM Cal_TABLE", function( err, row ) {
-        // 取得したデータ1レコードずつ処理をする
-        console.log( row.id + ": " + row.formula );
-        str += row.formula;
-        str += "\n";
-        console.log( str );
-      })
-      if ( true ) {
-        resolve(str);  //引数のresolveに’成功’を返す
-      } else {
-        reject(new Error('失敗'));    //引数のreject'失敗'を返す
+    //serialize内の処理は同期処理
+    db.serialize( );
+    db.each("SELECT rowid AS id, formula FROM Cal_TABLE", function( err, row ) {
+      if(err)
+      {
+        throw err;
       }
-  
+      // 取得したデータ1レコードずつ処理をする
+      console.log( row.id + ": " + row.formula );
+      str += row.formula;
+      str += "\n";
+      console.log( str );
     })
+    if ( true ) {
+      resolve(str);  //引数のresolveに’成功’を返す
+    } else {
+      reject(new Error('失敗'));    //引数のreject'失敗'を返す
+    }
   })
 };
 
-
-
 app.get('/dentaku', (req, res) => {
-//  let str = "";
+  let str = "";
+  promise1.then(()=>{         // TypeError: promise1.then is not a function
+    console.log( str );
+    res.send(str);
+  });
+
+  
+// let str = "";
 //  // テーブルのレコードを取得する
 //  db.serialize(function() {
 //    db.each("SELECT rowid AS id, formula FROM Cal_TABLE", function( err, row ) {
@@ -65,12 +73,6 @@ app.get('/dentaku', (req, res) => {
     })
   });
  */
-
-  promise1.then(()=> {  
-    console.log( str );
-    res.send(str);
-  });
-
 });
 
 // 計算
