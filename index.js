@@ -1,44 +1,65 @@
-const { Pool } = require('pg')
-const { json } = require('express');
+const { json } = require('express')
 const express = require('express')
+const logger = require('morgan')
+const helmet = require('helmet')
 const db = require('./postgres')
 const app = express()
 const port = 8000
 
-const connectionString = process.env.POSTGRES_URI;
-const pool = new Pool({ connectionString });
+const option = {
+  "Content-Type": "application/json",
+  'Access-Control-Allow-Origin': '*'
+}
+
+app.use(logger("short"));
+app.use(helmet())
+app.use(helmet.contentSecurityPolicy());
+app.use(helmet.dnsPrefetchControl());
+app.use(helmet.expectCt());
+app.use(helmet.frameguard());
+app.use(helmet.hidePoweredBy());
+app.use(helmet.hsts());
+app.use(helmet.ieNoOpen());
+app.use(helmet.noSniff());
+app.use(helmet.permittedCrossDomainPolicies());
+app.use(helmet.referrerPolicy());
+app.use(helmet.xssFilter());
 
 app.get('/', (req, res) => {
-  res.json({
-    'msg': 'Hello'
-  });
+  res
+    .status(200)
+    .set(option)
+    .json({ 'msg': 'Hello' })
 });
 
-app.get('/dentaku/allselect', (req, res) => {
-  db.selsectQuery(pool)
+app.get('/api/allselect', (req, res) => {
+  db.selsectQuery()
     .then((resolve) => {
-      res.json({
-        'records': resolve.rows
-      });
+      res
+        .status(200)
+        .set(option)
+        .json({ 'records': resolve.rows })
     })
     .catch(e => {
-      res.send(String(e));
+      res.status(500).json({ 'error': e });
     })
 });
 
-app.get('/dentaku/alldelete', (req, res) => {
-  db.deleteQuery(pool)
+app.get('/api/alldelete', (req, res) => {
+  db.deleteQuery()
     .then((resolve) => {
-      res.json({
-        'result': 'OK'
-      });
+      res
+        .status(200)
+        .set(option)
+        .json({ 'result': 'OK' })
+
     })
     .catch(e => {
-      res.send(String(e));
+      res.status(500).json({ 'error': e });
     })
 });
 
-app.get('/dentaku/:val1', (req, res) => {
+app.get('/api/:val1', (req, res) => {
   // 文字列を数字と演算子と数字に分解
   const str = req.params.val1
   var array_str = str.split(",");
@@ -72,24 +93,20 @@ app.get('/dentaku/:val1', (req, res) => {
   let formura = array_str.join("") + result;
   // テーブルにインサートする
 
-  db.insertQury(pool, formura)
+  db.insertQury(formura)
     .then((resolve) => {
-      res.json({
-        'result': result
-      });
+      res
+        .status(200)
+        .set(option)
+        .json({ 'result': result })
     })
     .catch(e => {
-      res.send(String(e));
+      res.status(500).json({ 'error': e });
     })
   // 返すのは計算結果のみ
 });
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
+const server = app.listen(process.env.PORT || 3000, () => {
+  console.log('PORT: %d', server.address().port)
 });
 
-process.on('exit', function () {
-  // ここに終了時の処理を書く
-  db.close();
-  console.log('server end');
-});

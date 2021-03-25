@@ -1,51 +1,52 @@
 const { Pool } = require('pg')
 
-
 const connectionString = process.env.POSTGRES_URI;
 const pool = new Pool({ connectionString });
-pool.query('SELECT NOW()', (err, res) => {
-  console.log(err, res)
-  pool.end()
-})
 
 // データベースの宣言
-async function selsectQuery(pool) {
-  const cliant = await pool.connect();
+async function selsectQuery() {
+  const client = await pool.connect();
   try {
-    const res = cliant.query("SELECT * FORM Cal_TABLE");
+    await client.query('BEGIN');
+    const res = await client.query("SELECT * FROM Cal_TABLE");
+    await client.query('COMMIT');
     return new Promise((resolve) => {
       resolve(res);
     })
   } finally {
-    cliant.release();
+    await client.release();
   }
 }
 
-async function insertQury(pool, val) {
+async function insertQury(val) {
   const q = {
     text: 'INSERT INTO Cal_TABLE(formura) VALUES($1)',
     values: [val],
   }
-  const cliant = await pool.connect();
+  const client = await pool.connect();
   try {
-    const res = cliant.query(q);
+    await client.query('BEGIN');
+    const res = await client.query(q);
+    await client.query('COMMIT');
     return new Promise((resolve) => {
       resolve(res);
     })
   } finally {
-    cliant.release();
+    client.release();
   }
 }
 
-async function deleteQuery(pool) {
-  const cliant = await pool.connect();
+async function deleteQuery() {
+  const client = await pool.connect();
   try {
-    const res = cliant.query("DELETE FROM Cal_TABLE");
+    await client.query('BEGIN');
+    const res = await client.query("DELETE FROM Cal_TABLE");
+    await client.query('COMMIT');
     return new Promise((resolve) => {
       resolve(res);
     })
   } finally {
-    cliant.release();
+    client.release();
   }
 }
 
