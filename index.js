@@ -37,7 +37,28 @@ app.use(helmet.noSniff());
 app.use(helmet.permittedCrossDomainPolicies());
 app.use(helmet.referrerPolicy());
 app.use(helmet.xssFilter());
-app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerJSDoc(awagger_jsdoc_options)))
+app.use('/spec', swaggerUi.serve, swaggerUi.setup(swaggerJSDoc(awagger_jsdoc_options)))
+
+
+/**
+ * @swagger
+ * /
+ *   get:
+ *     description:ホーム
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         examples:
+ *           result:
+ *              msg: 'Hello'
+ */
+app.get('/', (req, res) => {
+  res
+    .status(200)
+    .set(option)
+    .json({ 'msg': 'Hello' })
+});
 
 /**
  * @swagger
