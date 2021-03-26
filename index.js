@@ -42,9 +42,9 @@ app.use('/spec', swaggerUi.serve, swaggerUi.setup(swaggerJSDoc(awagger_jsdoc_opt
 
 /**
  * @swagger
- * /
+ * /:
  *   get:
- *     description:ホーム
+ *     description: ホーム
  *     produces:
  *       - application/json
  *     responses:
@@ -95,7 +95,7 @@ app.get('/api/allselect', (req, res) => {
  *       - application/json
  *     responses:
  *       200:
- *         description: nameにJohnを指定した場合、挨拶を返す
+ *         description: 登録が完了すると”OK”と返す
  *         examples:
  *           result:
  *              result: 'OK'
@@ -123,7 +123,7 @@ app.get('/api/alldelete', (req, res) => {
  *       - application/json
  *     responses:
  *       200:
- *         description: nameにJohnを指定した場合、挨拶を返す
+ *         description: 計算した値を返す
  *         examples:
  *           result:
  *              result: "20"
