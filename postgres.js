@@ -1,7 +1,9 @@
 const { Pool } = require('pg')
 
-const connectionString = process.env.POSTGRES_URI;
-const pool = new Pool({ connectionString });
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false }
+});
 
 // データベースの宣言
 async function selsectQuery() {
