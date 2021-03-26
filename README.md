@@ -1,2 +1,3 @@
 - `npm i` - packageのインストール　
-- ``
+- `git remote add <herokuのrepository>` - リモートリポジトリの登録　
+- `git push heroku main` - Herokuへpush

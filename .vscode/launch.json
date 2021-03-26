@@ -11,7 +11,7 @@
       "skipFiles": ["<node_internals>/**"],
       "program": "${workspaceFolder}/index.js",
       "env": {
-        "POSTGRES_URI": "postgresql://postgres:1234@localhost:5432/test"
+        "DATABASE_URL": "postgresql://postgres:1234@localhost:5432/test"
       }
     }
   ]
